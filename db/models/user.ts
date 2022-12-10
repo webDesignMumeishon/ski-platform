@@ -6,6 +6,7 @@ type UserAttributes = {
   firstName: string,
   lastName: string,
   email: string,
+  password: string,
   p_enabled: boolean
 };
 
@@ -16,11 +17,11 @@ class User extends Model<UserAttributes, UserCreationAttributes> {
   declare firstName: string;
   declare lastName: string;
   declare email: string;
+  declare password: string;
   declare p_enabled: boolean;
 }
 
 User.init({
-  // Model attributes are defined here
   id: {
     type: DataTypes.INTEGER,
     primaryKey: true,
@@ -39,6 +40,10 @@ User.init({
     type: DataTypes.STRING,
     allowNull: false,
     unique: true
+  },
+  password: {
+    type: DataTypes.STRING,
+    allowNull: false,
   },
   p_enabled: {
     type: DataTypes.BOOLEAN,
