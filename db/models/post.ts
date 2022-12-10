@@ -30,7 +30,7 @@ Post.init({
     timestamps: true,
     underscored: true,
     paranoid: true,
-    modelName: 'user'
+    modelName: 'post'
 });
   
-  export default Post
+export default Post
