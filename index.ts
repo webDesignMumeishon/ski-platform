@@ -1,4 +1,4 @@
-import express, { Express, Request, Response } from 'express';
+import express, { Express, NextFunction, Request, Response } from 'express';
 import dotenv from 'dotenv';
 import morgan from 'morgan'
 import bodyParser from 'body-parser'
@@ -18,12 +18,18 @@ app.use(morgan('dev'));
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 
+function logger(req : Request, _ : Response, next : NextFunction){
+  console.log(`Request received at ${req.originalUrl}`)
+  next()
+}
+
+app.use(logger)
 
 app.get('/:id', async (req: Request, res: Response) => {
 
-   const id = req.params.id
+  const id = req.params.id
 
-   console.log(id)
+  console.log(id)
   const user = await User.findByPk(Number(id))
 
   console.log(user)
