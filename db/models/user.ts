@@ -4,8 +4,9 @@ import sequelize from '../db'
 type UserAttributes = {
   id: number,
   firstName: string,
-  lastName: string
-  email: string
+  lastName: string,
+  email: string,
+  p_enabled: boolean
 };
 
 type UserCreationAttributes = Optional<UserAttributes, 'id'>;
@@ -15,6 +16,7 @@ class User extends Model<UserAttributes, UserCreationAttributes> {
   declare firstName: string;
   declare lastName: string;
   declare email: string;
+  declare p_enabled: boolean;
 }
 
 User.init({
@@ -37,6 +39,11 @@ User.init({
     type: DataTypes.STRING,
     allowNull: false,
     unique: true
+  },
+  p_enabled: {
+    type: DataTypes.BOOLEAN,
+    allowNull: false,
+    defaultValue: false
   }
 
 }, {
