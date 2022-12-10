@@ -19,27 +19,29 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 
 function logger(req : Request, _ : Response, next : NextFunction){
-  console.log(`Request received at ${req.originalUrl}`)
+  console.log(`>>> Request received at: ${req.originalUrl}`)
   next()
 }
 
 app.use(logger)
 
-app.get('/:id', async (req: Request, res: Response) => {
+app.get('/:id', (req: Request, res: Response, next) => {
 
-  const id = req.params.id
+  throw Error('This is an error testing')
 
-  console.log(id)
-  const user = await User.findByPk(Number(id))
 
-  console.log(user)
-  if(user !== null){
+  // const id = req.params.id
+
+  // const user = await User.findByPk(id)
+
+  // console.log(user)
+  // if(user !== null){
     
-    return res.cookie(user.firstName, 'Flavio').send('ok')
-  }
-  else{
-    return res.sendStatus(404)
-  }
+  //   return res.cookie(user.firstName, 'Flavio').send('ok')
+  // }
+  // else{
+  //   return res.sendStatus(404)
+  // }
 
 
 });
@@ -57,6 +59,13 @@ app.delete('/', async (req: Request, res: Response) => {
   });
   res.send('ok')
 });
+
+app.use((error : Error, _ : Request, res : Response, next : NextFunction) => {
+  console.log(1, 'Holisj')
+  const message = error.message
+  res.status(500).json({error: message})
+
+})
 
 app.listen(port, async () => {
   try {
