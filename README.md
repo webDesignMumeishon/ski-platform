@@ -1,4 +1,2 @@
 # ski-platform
 
-
-Holis

@@ -1,71 +1,39 @@
-import express, { Express, NextFunction, Request, Response } from 'express';
 import dotenv from 'dotenv';
-import morgan from 'morgan'
-import bodyParser from 'body-parser'
-import cookieParser from 'cookie-parser'
+import Koa from 'koa';
+import bodyparser from 'koa-bodyparser';
+import Router from '@koa/router';
 
 import User from './db/models/user'
 import Comments from './db/models/comments'
 import Post from './db/models/post'
 import sequelize from './db/db'
+import IndexRouter from './routes/index'
+
 dotenv.config();
 
-const app: Express = express();
+const app = new Koa();
+const router = new Router();
 const port = process.env.PORT;
 
-app.use(cookieParser())
-app.use(morgan('dev'));
-app.use(bodyParser.urlencoded({extended: false}));
-app.use(bodyParser.json());
-
-function logger(req : Request, _ : Response, next : NextFunction){
-  console.log(`>>> Request received at: ${req.originalUrl}`)
-  next()
-}
-
-app.use(logger)
-
-app.get('/:id', (req: Request, res: Response, next) => {
-
-  throw Error('This is an error testing')
+// router.use(cookieParser())
+// router.use(morgan('dev'));
+// router.use(bodyParser.urlencoded({extended: true}));
+// router.use(bodyParser.json());
 
 
-  // const id = req.params.id
-
-  // const user = await User.findByPk(id)
-
-  // console.log(user)
-  // if(user !== null){
-    
-  //   return res.cookie(user.firstName, 'Flavio').send('ok')
-  // }
-  // else{
-  //   return res.sendStatus(404)
-  // }
-
-
+app.use(async function(ctx, next){
+  try {
+    return await next();
+	} catch (err) {
+    ctx.status = 500
+    ctx.body = err
+	}
 });
 
-app.post('/', async (req: Request, res: Response) => {
-  console.log(req.body)
-  res.json({msg: 'Express + TypeScript Working'});
-});
+app.use(bodyparser());
 
-app.delete('/', async (req: Request, res: Response) => {
-  await User.destroy({
-    where: {
-      id: 1
-    }
-  });
-  res.send('ok')
-});
+router.use('/user', IndexRouter)
 
-app.use((error : Error, _ : Request, res : Response, next : NextFunction) => {
-  console.log(1, 'Holisj')
-  const message = error.message
-  res.status(500).json({error: message})
-
-})
 
 app.listen(port, async () => {
   try {
@@ -89,3 +57,5 @@ app.listen(port, async () => {
     console.error('Unable to connect to the database:', error);
   }
 });
+
+app.use(router.routes());
