@@ -2,21 +2,21 @@ import { DataTypes, Model, Optional } from 'sequelize';
 import sequelize from '../db'
 
 type CityAttributes = {
-    id: number,
-    city: string,
-    state: string,
-    country: string,
-    postcode: string,
+  id: number,
+  city: string,
+  state: string,
+  country: string,
+  postcode: string,
 }
 
 type CityCreationAttributes = Optional<CityAttributes, 'id'>
 
 class City extends Model<CityAttributes, CityCreationAttributes> {
-    declare id: number;
-    declare city: string;
-    declare state: string;
-    declare country: string;
-    declare postcode: string;
+  declare id: number;
+  declare city: string;
+  declare state: string;
+  declare country: string;
+  declare postcode: string;
 }
 
 City.init({

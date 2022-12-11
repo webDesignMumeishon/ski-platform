@@ -8,7 +8,10 @@ router.get('/:id', async (ctx) => {
   const user = await User.findByPk(id)
   
   if(user !== null){
-    return ctx.body = user
+    return ctx.body = {
+      ...user.toJSON(),
+      fullName: user.fullName
+    }
   }
   else{
       return ctx.status = 404

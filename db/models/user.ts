@@ -1,4 +1,4 @@
-import { DataTypes, Model, Optional } from 'sequelize';
+import { DataTypes, Model, NonAttribute, Optional } from 'sequelize';
 import sequelize from '../db'
 
 type UserAttributes = {
@@ -19,6 +19,10 @@ class User extends Model<UserAttributes, UserCreationAttributes> {
   declare email: string;
   declare password: string;
   declare p_enabled: boolean;
+
+  get fullName(): NonAttribute<string> {
+    return `${this.firstName} ${this.lastName}`;
+  }
 }
 
 User.init({
@@ -49,7 +53,7 @@ User.init({
     type: DataTypes.BOOLEAN,
     allowNull: false,
     defaultValue: false
-  }
+  },
 
 }, {
   sequelize,
