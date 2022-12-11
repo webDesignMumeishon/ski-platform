@@ -8,6 +8,7 @@ import Comments from './db/models/comments'
 import Post from './db/models/post'
 import sequelize from './db/db'
 import IndexRouter from './routes/index'
+import City from './db/models/city'
 
 dotenv.config();
 
@@ -41,6 +42,7 @@ app.listen(port, async () => {
     await User.sync({ force: true })
     await Post.sync({ force: true })
     await Comments.sync({ force: true })
+    await City.sync({ force: true })
     console.log('Connection has been established successfully.');
     console.log(`⚡️[server]: Server is running at https://localhost:${port}`);
     await sequelize.query(`
