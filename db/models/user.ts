@@ -10,7 +10,7 @@ type UserAttributes = {
   p_enabled: boolean
 };
 
-type UserCreationAttributes = Optional<UserAttributes, 'id'>;
+type UserCreationAttributes = Optional<UserAttributes, 'id' | 'p_enabled'>;
 
 class User extends Model<UserAttributes, UserCreationAttributes> {
   declare id: number;

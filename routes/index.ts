@@ -7,8 +7,9 @@ import commentRoutes from './comment'
 
 const router = new Router();
 
-router.use('/post', postRoutes)
+
 router.use('/user', userRoutes)
+router.use('/post', postRoutes)
 router.use('/comment', commentRoutes)
 
 

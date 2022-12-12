@@ -18,13 +18,11 @@ const app = new Koa();
 const router = new Router();
 const port = process.env.PORT;
 
-
-
-
 app.use(async function(ctx, next){
   try {
     return await next();
 	} catch (err) {
+    console.log(err)
     ctx.status = 500
     ctx.body = err
 	}
@@ -34,10 +32,7 @@ app.use(morgan('dev'));
 app.use(cookieParser());
 router.use(bodyparser());
 
-
-
 router.use(IndexRouter)
-
 
 app.listen(port, async () => {
   try {
@@ -54,7 +49,7 @@ app.listen(port, async () => {
         users("first_name", "last_name", "email", "password", "created_at", "updated_at") 
       VALUES 
         ('Martin', 'Macchi', 'martin@mail.com', '123456' ,NOW(), NOW()),
-        ('Tomas', 'Macchi', 'tomas@mail.com', '123456', NOW(), NOW()),
+        ('Tomas', 'Macchi', 'tomas@mail.com', '$2b$10$uwXWKXJYC1Y1i9OB77iSl.Ldvrz9LcDpqXvgA1CYuOOlTppf7XR/G', NOW(), NOW()),
         ('Lucas', 'Macchi', 'lucas@mail.com', '123456', NOW(), NOW());
 
     `)
