@@ -1,23 +1,17 @@
-import User from '../db/models/user'
 
 import Router from '@koa/router';
+
+import userRoutes from './user'
+import postRoutes from './post'
+import commentRoutes from './comment'
+
 const router = new Router();
 
-router.get('/:id', async (ctx) => {
-  const id = ctx.params.id
-  const user = await User.findByPk(id)
+router.use('/post', postRoutes)
+router.use('/user', userRoutes)
+router.use('/comment', commentRoutes)
 
-  
-  if(user !== null){
-    return ctx.body = {
-      ...user.toJSON(),
-      fullName: user.fullName
-    }
-  }
-  else{
-      return ctx.status = 404
-  }
-});
+
 
 
 export default router.routes()

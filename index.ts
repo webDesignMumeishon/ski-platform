@@ -3,6 +3,7 @@ import Koa from 'koa';
 import bodyparser from 'koa-bodyparser';
 import Router from '@koa/router';
 import cookieParser from 'koa-cookie'
+import morgan from 'koa-morgan'
 
 import User from './db/models/user'
 import Comments from './db/models/comments'
@@ -17,12 +18,6 @@ const app = new Koa();
 const router = new Router();
 const port = process.env.PORT;
 
-// router.use(cookieParser())
-// router.use(morgan('dev'));
-// router.use(bodyParser.urlencoded({extended: true}));
-// router.use(bodyParser.json());
-
-
 app.use(async function(ctx, next){
   try {
     return await next();
@@ -32,10 +27,11 @@ app.use(async function(ctx, next){
 	}
 });
 
+app.use(morgan('dev'));
 app.use(bodyparser());
 app.use(cookieParser());
 
-router.use('/user', IndexRouter)
+router.use(IndexRouter)
 
 
 app.listen(port, async () => {
