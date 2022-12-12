@@ -18,6 +18,9 @@ const app = new Koa();
 const router = new Router();
 const port = process.env.PORT;
 
+
+
+
 app.use(async function(ctx, next){
   try {
     return await next();
@@ -28,8 +31,10 @@ app.use(async function(ctx, next){
 });
 
 app.use(morgan('dev'));
-app.use(bodyparser());
 app.use(cookieParser());
+router.use(bodyparser());
+
+
 
 router.use(IndexRouter)
 

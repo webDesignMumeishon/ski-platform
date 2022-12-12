@@ -1,6 +1,6 @@
 import User from '../db/models/user'
 
-import Router from '@koa/router';
+import Router, {RouterContext} from '@koa/router';
 const router = new Router();
 
 router.get('/:id', async (ctx) => {
@@ -19,6 +19,11 @@ router.get('/:id', async (ctx) => {
       return ctx.status = 404
   }
 });
+
+router.post('/create', async (ctx: RouterContext) => {
+    const id = ctx.request.body
+    ctx.body = id
+})
 
 
 export default router.routes()
