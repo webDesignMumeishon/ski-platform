@@ -6,6 +6,7 @@ const router = new Router();
 router.get('/:id', async (ctx) => {
   const id = ctx.params.id
   const user = await User.findByPk(id)
+
   
   if(user !== null){
     return ctx.body = {

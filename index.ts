@@ -2,6 +2,7 @@ import dotenv from 'dotenv';
 import Koa from 'koa';
 import bodyparser from 'koa-bodyparser';
 import Router from '@koa/router';
+import cookieParser from 'koa-cookie'
 
 import User from './db/models/user'
 import Comments from './db/models/comments'
@@ -32,6 +33,7 @@ app.use(async function(ctx, next){
 });
 
 app.use(bodyparser());
+app.use(cookieParser());
 
 router.use('/user', IndexRouter)
 

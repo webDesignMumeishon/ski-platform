@@ -34,7 +34,10 @@ User.init({
   },
   firstName: {
     type: DataTypes.STRING,
-    allowNull: false
+    allowNull: false,
+    get() {
+      return this.getDataValue('firstName')
+    },
   },
   lastName: {
     type: DataTypes.STRING,
