@@ -4,20 +4,24 @@ import dotenv from 'dotenv';
 import Router, {RouterContext} from '@koa/router';
 
 import User from '../db/models/user'
-import checkUser from '../middleware/checkUser';
+import checkAndSetUserId from '../middleware/checkAndSetUserId';
 
 
 const secretKey = process.env.secretKey || 'testing';
 
 dotenv.config();
 
-
 const router = new Router();
 
-router.get('/:id', async (ctx) => {
+router.get('/:id', checkAndSetUserId, async (ctx) => {
+  
   const id = ctx.params.id
-  const user = await User.findByPk(id)
 
+  if(id != ctx.userId){
+    ctx.throw('Unauthorized')
+  }
+
+  const user = await User.findByPk(id)
   
   if(user !== null){
     return ctx.body = {
@@ -31,7 +35,6 @@ router.get('/:id', async (ctx) => {
 });
 
 router.post('/create', async (ctx: RouterContext) => {
-  const id = ctx.request.body as unknown as any
 
   const { firstName, lastName, email, password } = ctx.request.body as unknown as any
 
@@ -60,12 +63,9 @@ router.post('/log-in', async (ctx: RouterContext) => {
     const isSame = await bcrypt.compare(password, user.password);
 
     if (isSame) {
-      let token = jwt.sign({ id: user.id }, secretKey, {
-        expiresIn: 1 * 24 * 60 * 60 * 1000,
-      });
+      let token = jwt.sign({ id: user.id }, secretKey);
 
-      ctx.cookies.set("jwt", token, { maxAge: 1 * 24 * 60 * 60, httpOnly: true });
-
+      ctx.cookies.set("ski_platform", token, { maxAge: 1 * 24 * 60 * 60, httpOnly: true });
 
       //send user data
       ctx.status = 201
