@@ -5,9 +5,9 @@ import Router, { RouterContext } from "@koa/router";
 
 import User from "../db/models/user";
 import checkAndSetUserId from "../middleware/checkAndSetUserId";
+import { UserFields } from "../enums/user";
 
-const secretKey = process.env.secretKey || "testing";
-
+const secretKey = process.env.secretKey || "";
 dotenv.config();
 
 const router = new Router();
@@ -44,7 +44,7 @@ router.post("/create", async (ctx: RouterContext) => {
   //saving the user
   const user = await User.create(data);
 
-  ctx.body = user;
+  ctx.body = user.excludeFields([UserFields.ID]);
 });
 
 router.post("/log-in", async (ctx: RouterContext) => {
@@ -61,13 +61,18 @@ router.post("/log-in", async (ctx: RouterContext) => {
       let token = jwt.sign({ id: user.id }, secretKey);
 
       ctx.cookies.set("ski_platform", token, {
-        maxAge: 1 * 24 * 60 * 60,
         httpOnly: true,
       });
 
       //send user data
       ctx.status = 201;
-      ctx.body = user;
+      ctx.body = user.excludeFields([
+        UserFields.ID,
+        UserFields.PASSWORD,
+        UserFields.UPDATED_AT,
+        UserFields.CREATED_AT,
+        UserFields.DELETED_AT,
+      ]);
     } else {
       ctx.status = 401;
       ctx.throw("Authentication failed");
