@@ -1,56 +1,58 @@
-import { DataTypes, Model, Optional } from 'sequelize';
-import sequelize from '../db'
-import City from './city'
-import User from './user'
-
+import { DataTypes, Model, Optional } from "sequelize";
+import sequelize from "../db";
+import City from "./city";
+import User from "./user";
 
 type PostAttributes = {
-    id: number,
-    user_id: number,
-    title: string,
-    city_id: number,
-}
+  id: number;
+  user_id: number;
+  title: string;
+  city_id: number;
+};
 
-type PostCreationAttributes = Optional<PostAttributes, 'id'>
+type PostCreationAttributes = Optional<PostAttributes, "id">;
 
 class Post extends Model<PostAttributes, PostCreationAttributes> {
-    declare id: number;
-    declare user_id: number;
-    declare title: string;
-    declare city_id: number;
+  declare id: number;
+  declare user_id: number;
+  declare title: string;
+  declare city_id: number;
 }
 
-Post.init({
+Post.init(
+  {
     id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,
-      unique: true
+      unique: true,
     },
     user_id: {
       type: DataTypes.INTEGER,
       references: {
         model: User,
-        key: 'id'
-      }
+        key: "id",
+      },
     },
     title: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: false,
     },
     city_id: {
       type: DataTypes.INTEGER,
       references: {
         model: City,
-        key: 'id'
-      }
-    }
-  }, {
+        key: "id",
+      },
+    },
+  },
+  {
     sequelize,
     timestamps: true,
     underscored: true,
     paranoid: true,
-    modelName: 'post'
-});
-  
-export default Post
+    modelName: "post",
+  }
+);
+
+export default Post;
