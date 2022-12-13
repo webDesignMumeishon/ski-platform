@@ -28,7 +28,7 @@ class User extends Model<UserAttributes, UserCreationAttributes> {
     return `${this.firstName} ${this.lastName}`;
   }
 
-  excludeFields(fields: UserFields[]) {
+  omitFields(fields: UserFields[]) {
     return _.omit(this.get(), fields);
   }
 }

@@ -44,7 +44,7 @@ router.post("/create", async (ctx: RouterContext) => {
   //saving the user
   const user = await User.create(data);
 
-  ctx.body = user.excludeFields([UserFields.ID]);
+  ctx.body = user.omitFields([UserFields.ID]);
 });
 
 router.post("/log-in", async (ctx: RouterContext) => {
@@ -66,7 +66,7 @@ router.post("/log-in", async (ctx: RouterContext) => {
 
       //send user data
       ctx.status = 201;
-      ctx.body = user.excludeFields([
+      ctx.body = user.omitFields([
         UserFields.ID,
         UserFields.PASSWORD,
         UserFields.UPDATED_AT,
