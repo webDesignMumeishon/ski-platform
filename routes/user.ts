@@ -53,9 +53,8 @@ router.post("/log-in", async (ctx: RouterContext) => {
   });
 
   if (user !== null) {
-    const isSame = await bcrypt.compare(password, user.password);
-
-    if (isSame) {
+    const isSamePassword = await user.comparePassword(password)
+    if (isSamePassword) {
       let token = jwt.sign({ id: user.id }, secretKey);
 
       ctx.cookies.set("ski_platform", token, {
@@ -64,7 +63,8 @@ router.post("/log-in", async (ctx: RouterContext) => {
 
       //send user data
       ctx.status = 201;
-      ctx.body = user.toPublic()
+
+      ctx.body = user.toPublic();
     } else {
       ctx.status = 401;
       ctx.throw("Authentication failed");

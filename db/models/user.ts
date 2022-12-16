@@ -1,5 +1,6 @@
 import { DataTypes, Model, NonAttribute, Optional } from "sequelize";
 import _ from "lodash";
+import bcrypt from "bcrypt";
 
 import sequelize from "../db";
 import { UserPrivateFields } from "../../enums/user";
@@ -34,6 +35,10 @@ class User extends Model<UserAttributes, UserCreationAttributes> {
   toPublic(){
     return _.omit(this.get(), Object.values(UserPrivateFields));
   }
+
+  async comparePassword(password : string) : Promise<boolean>{
+    return await bcrypt.compare(password, this.password)
+  }
 }
 
 User.init(
@@ -63,6 +68,10 @@ User.init(
     password: {
       type: DataTypes.STRING,
       allowNull: false,
+      async set(value : string) {
+        const hashedPassword = await bcrypt.hash(value, 10) 
+        this.setDataValue('password', hashedPassword);
+      }
     },
     p_enabled: {
       type: DataTypes.BOOLEAN,
