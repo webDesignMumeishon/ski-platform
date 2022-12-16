@@ -11,6 +11,7 @@ import Post from './db/models/post'
 import sequelize from './db/db'
 import IndexRouter from './routes/index'
 import City from './db/models/city'
+import insertDb from './db/query/insertDb'
 
 dotenv.config();
 
@@ -41,18 +42,12 @@ app.listen(port, async () => {
     await Post.sync({ force: true })
     await Comments.sync({ force: true })
     await City.sync({ force: true })
+
     console.log('Connection has been established successfully.');
     console.log(`⚡️[server]: Server is running at https://localhost:${port}`);
-    await sequelize.query(`
 
-      INSERT INTO 
-        users("first_name", "last_name", "email", "password", "created_at", "updated_at") 
-      VALUES 
-        ('Martin', 'Macchi', 'martin@mail.com', '123456' ,NOW(), NOW()),
-        ('Tomas', 'Macchi', 'tomas@mail.com', '$2b$10$uwXWKXJYC1Y1i9OB77iSl.Ldvrz9LcDpqXvgA1CYuOOlTppf7XR/G', NOW(), NOW()),
-        ('Lucas', 'Macchi', 'lucas@mail.com', '123456', NOW(), NOW());
+    await insertDb()
 
-    `)
   } catch (error) {
     console.error('Unable to connect to the database:', error);
   }
