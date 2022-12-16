@@ -5,7 +5,6 @@ import Router, { RouterContext } from "@koa/router";
 
 import User from "../db/models/user";
 import checkAndSetUserId from "../middleware/checkAndSetUserId";
-import { UserFields } from "../enums/user";
 
 const secretKey = process.env.secretKey || "";
 dotenv.config();
@@ -38,13 +37,12 @@ router.post("/create", async (ctx: RouterContext) => {
     firstName,
     lastName,
     email,
-    password: await bcrypt.hash(password, 10),
+    password: await User.hashPassword(password),
   };
 
   //saving the user
   const user = await User.create(data);
-
-  ctx.body = user.omitFields([UserFields.ID]);
+  ctx.body = user.toPublic();
 });
 
 router.post("/log-in", async (ctx: RouterContext) => {
@@ -55,9 +53,8 @@ router.post("/log-in", async (ctx: RouterContext) => {
   });
 
   if (user !== null) {
-    const isSame = await bcrypt.compare(password, user.password);
-
-    if (isSame) {
+    const isSamePassword = await user.comparePassword(password)
+    if (isSamePassword) {
       let token = jwt.sign({ id: user.id }, secretKey);
 
       ctx.cookies.set("ski_platform", token, {
@@ -66,13 +63,8 @@ router.post("/log-in", async (ctx: RouterContext) => {
 
       //send user data
       ctx.status = 201;
-      ctx.body = user.omitFields([
-        UserFields.ID,
-        UserFields.PASSWORD,
-        UserFields.UPDATED_AT,
-        UserFields.CREATED_AT,
-        UserFields.DELETED_AT,
-      ]);
+
+      ctx.body = user.toPublic();
     } else {
       ctx.status = 401;
       ctx.throw("Authentication failed");

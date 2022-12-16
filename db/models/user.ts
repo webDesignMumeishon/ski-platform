@@ -1,9 +1,13 @@
 import { DataTypes, Model, NonAttribute, Optional } from "sequelize";
 import _ from "lodash";
+import bcrypt from "bcrypt";
 
 import sequelize from "../db";
-import { UserFields } from "../../enums/user";
+import { UserPrivateFields } from "../../enums/user";
 
+const PRIVATE_FIELDS = [
+  'id'
+]
 
 type UserAttributes = {
   id: number;
@@ -28,8 +32,16 @@ class User extends Model<UserAttributes, UserCreationAttributes> {
     return `${this.firstName} ${this.lastName}`;
   }
 
-  omitFields(fields: UserFields[]) {
-    return _.omit(this.get(), fields);
+  toPublic(){
+    return _.omit(this.get(), Object.values(UserPrivateFields));
+  }
+
+  async comparePassword(password : string) : Promise<boolean>{
+    return await bcrypt.compare(password, this.password)
+  }
+
+  public static async hashPassword(password: string) : Promise<string>{
+    return await bcrypt.hash(password, 10)
   }
 }
 
