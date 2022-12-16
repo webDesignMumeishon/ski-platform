@@ -37,7 +37,7 @@ router.post("/create", async (ctx: RouterContext) => {
     firstName,
     lastName,
     email,
-    password: await bcrypt.hash(password, 10),
+    password: await User.hashPassword(password),
   };
 
   //saving the user

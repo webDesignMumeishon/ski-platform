@@ -39,6 +39,10 @@ class User extends Model<UserAttributes, UserCreationAttributes> {
   async comparePassword(password : string) : Promise<boolean>{
     return await bcrypt.compare(password, this.password)
   }
+
+  public static async hashPassword(password: string) : Promise<string>{
+    return await bcrypt.hash(password, 10)
+  }
 }
 
 User.init(
@@ -68,10 +72,6 @@ User.init(
     password: {
       type: DataTypes.STRING,
       allowNull: false,
-      async set(value : string) {
-        const hashedPassword = await bcrypt.hash(value, 10) 
-        this.setDataValue('password', hashedPassword);
-      }
     },
     p_enabled: {
       type: DataTypes.BOOLEAN,
