@@ -36,7 +36,8 @@ const insertDb = {
       INSERT INTO 
         comments("user_id", "post_id", "comment", "created_at", "updated_at") 
       VALUES 
-        (1, 1, 'testing comment from user 1', NOW(), NOW());
+        (1, 1, 'testing comment from user 1', NOW(), NOW()),
+        (2, 1, 'testing comment from user 2', NOW(), NOW());
     `)
   }
 }

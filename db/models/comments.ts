@@ -7,6 +7,7 @@ type CommentsAttributes = {
     id: number,
     user_id: number,
     post_id: number,
+    parent: number,
     comment: string,
 }
 
@@ -16,6 +17,7 @@ class Comments extends Model<CommentsAttributes, CommentsCreationAttributes> {
     declare id: number;
     declare user_id: number;
     declare post_id: number;
+    declare parent: number;
     declare comment: string;
 
     static classLevelMethod() {
@@ -43,6 +45,10 @@ Comments.init({
             model: Post,
             key: 'id'
         }
+    },
+    parent: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
     },
     comment: {
       type: DataTypes.STRING,
