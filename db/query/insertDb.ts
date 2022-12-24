@@ -34,10 +34,12 @@ const insertDb = {
   comments: async () => {
     await sequelize.query(`
       INSERT INTO 
-        comments("user_id", "post_id", "comment", "created_at", "updated_at") 
+        comments("user_id", "post_id","parent", "comment", "created_at", "updated_at") 
       VALUES 
-        (1, 1, 'testing comment from user 1', NOW(), NOW()),
-        (2, 1, 'testing comment from user 2', NOW(), NOW());
+        (1, 1, null, 'testing comment from user 1', (NOW() - INTERVAL '1 HOUR'), (NOW() - INTERVAL '1 HOUR')),
+        (2, 1, null, 'testing comment from user 2', NOW(), NOW()),
+        (1, 1, 2, 'Commenting User 2 comment from User 1', (NOW() + INTERVAL '1 HOUR'), (NOW() + INTERVAL '1 HOUR'));
+
     `)
   }
 }

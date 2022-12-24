@@ -4,7 +4,9 @@ import Comments from '../db/models/comments';
 const router = new Router();
 
 router.get('/', async (ctx) => {
-    ctx.body = await Comments.findAll()
+    ctx.body = await Comments.findAll({
+        order: [['createdAt', 'ASC']]
+    })
 });
 
 
