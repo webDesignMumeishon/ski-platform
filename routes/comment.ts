@@ -1,8 +1,10 @@
 import Router from '@koa/router';
+import Comments from '../db/models/comments';
+
 const router = new Router();
 
 router.get('/', async (ctx) => {
-    ctx.body = {msg: 'comment routes'}
+    ctx.body = await Comments.findAll()
 });
 
 
