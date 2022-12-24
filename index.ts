@@ -4,8 +4,10 @@ import bodyparser from 'koa-bodyparser';
 import Router from '@koa/router';
 import cookieParser from 'koa-cookie'
 import morgan from 'koa-morgan'
+import cors from '@koa/cors'
 
 import User from './db/models/user'
+import ParentChildComment from './db/models/parent_child_comment'
 import Comments from './db/models/comments'
 import Post from './db/models/post'
 import sequelize from './db/db'
@@ -19,6 +21,7 @@ const app = new Koa();
 const router = new Router();
 const port = process.env.PORT;
 
+
 app.use(async function(ctx, next){
   try {
     return await next();
@@ -29,6 +32,7 @@ app.use(async function(ctx, next){
 	}
 });
 
+app.use(cors());
 app.use(morgan('dev'));
 app.use(cookieParser());
 router.use(bodyparser());
@@ -42,11 +46,15 @@ app.listen(port, async () => {
     await Post.sync({ force: true })
     await Comments.sync({ force: true })
     await City.sync({ force: true })
+    await ParentChildComment.sync({ force: true })
 
     console.log('Connection has been established successfully.');
     console.log(`⚡️[server]: Server is running at https://localhost:${port}`);
 
-    await insertDb()
+    await insertDb.users()
+    await insertDb.cities()
+    await insertDb.posts()
+    await insertDb.comments()
 
   } catch (error) {
     console.error('Unable to connect to the database:', error);
