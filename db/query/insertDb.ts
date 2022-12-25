@@ -27,7 +27,7 @@ const insertDb = {
       INSERT INTO 
         posts("user_id", "title", "city_id", "created_at", "updated_at") 
       VALUES 
-        (1, 'Title for post 1', 1, NOW(), NOW());
+        (1, 'This is a post created by Martin Macchi - user_id: 1', 1, NOW(), NOW());
     `)
   },
 
