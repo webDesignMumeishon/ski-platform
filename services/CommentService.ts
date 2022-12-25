@@ -2,8 +2,6 @@ import { QueryTypes } from 'sequelize';
 
 import sequelize from '../db/db'
 
-
-
 class CommentService {
 
     public static async getCommentsFromPost(postId: number){
