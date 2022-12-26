@@ -24,7 +24,7 @@ class PostService {
             CASE 
                 WHEN l.post_id = p.id AND l.user_id = :userId THEN 1
                 ELSE 0
-            END as didLike
+            END as did_like
             FROM likes l 
             WHERE l.post_id = p.id AND l.user_id = :userId
             GROUP BY l.id
