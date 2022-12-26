@@ -33,7 +33,7 @@ app.use(async function(ctx, next){
 	}
 });
 
-const whitelist = ['http://localhost:3001']
+const whitelist = ['http://localhost:3000']
 
 const corsOptions = {
   credentials: true, // This is important.
