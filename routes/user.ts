@@ -58,20 +58,19 @@ router.post("/log-in", async (ctx: RouterContext) => {
       let token = jwt.sign({ id: user.id }, secretKey);
 
       ctx.cookies.set("ski_platform", token, {
-        httpOnly: true,
+        httpOnly: true, 
       });
 
       //send user data
-      ctx.status = 201;
-
+      ctx.status = 200;
       ctx.body = user.toPublic();
     } else {
       ctx.status = 401;
-      ctx.throw("Authentication failed");
+      ctx.throw("Authentication failed", 401);
     }
   } else {
     ctx.status = 401;
-    ctx.throw("Authentication failed");
+    ctx.throw("Authentication failed", 401);
   }
 });
 

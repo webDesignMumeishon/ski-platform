@@ -2,29 +2,30 @@ import Router from '@koa/router'
 
 import LikeService from '../services/LikeService'
 import { LikeDelete } from '../enums/like'
+import checkAndSetUserId from '../middleware/checkAndSetUserId';
 
 const router = new Router()
 
 
-router.post('/', async(ctx) => {
+router.post('/',checkAndSetUserId, async(ctx) => {
 
-    const {userId, postId} = ctx.request.body as unknown as any
+    const {postId} = ctx.request.body as unknown as any
 
-    await LikeService.likePost(userId, postId)
+    await LikeService.likePost(ctx.userId, postId)
 
     ctx.status = 201
 })
 
-router.delete('/', async(ctx) => {
+router.delete('/', checkAndSetUserId, async(ctx) => {
 
-    const {userId, postId} = ctx.request.body as unknown as any
+    const {postId} = ctx.request.body as unknown as any
 
-    const deletedLike = await LikeService.unlikePost(userId, postId)
+    const deletedLike = await LikeService.unlikePost(ctx.userId, postId)
 
     if(deletedLike === LikeDelete.DELETED){
 
         return ctx.status = 200
-        
+
     }
 
 })

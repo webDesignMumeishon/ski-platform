@@ -2,12 +2,12 @@ import Router from '@koa/router';
 
 import CommentService from '../services/CommentService';
 import PostService from '../services/PostService';
+import checkAndSetUserId from '../middleware/checkAndSetUserId';
 
 const router = new Router();
 
-router.get('/list/posts/:userId', async (ctx) => {
-    const userId = ctx.params.userId
-    ctx.body = await PostService.getPostsAndCount(userId)
+router.get('/list/posts', checkAndSetUserId, async (ctx) => {
+    ctx.body = await PostService.getPostsAndCount(ctx.userId)
 });
 
 router.get('/:id', async (ctx) => {

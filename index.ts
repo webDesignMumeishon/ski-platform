@@ -1,5 +1,5 @@
 import dotenv from 'dotenv';
-import Koa from 'koa';
+import Koa, { Context } from 'koa';
 import bodyparser from 'koa-bodyparser';
 import Router from '@koa/router';
 import cookieParser from 'koa-cookie'
@@ -33,7 +33,23 @@ app.use(async function(ctx, next){
 	}
 });
 
-app.use(cors());
+const whitelist = ['http://localhost:3001']
+
+const corsOptions = {
+  credentials: true, // This is important.
+  origin: (ctx : Context) : string =>  {
+    const originUrl = ctx.request.header.origin
+    if(originUrl !== undefined){
+      if(whitelist.includes(originUrl)){
+        return '*'
+      }
+    }
+    return whitelist[0]
+  }
+}
+
+app.use(cors(corsOptions));
+
 app.use(morgan('dev'));
 app.use(cookieParser());
 router.use(bodyparser());
