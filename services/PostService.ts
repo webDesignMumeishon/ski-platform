@@ -4,18 +4,29 @@ import sequelize from '../db/db'
 
 class PostService {
 
-    public static async getPostsAndCount(){
+    public static async getPostsAndCount(userId : string){
         const result = await sequelize.query(`
         SELECT 
             p.id, 
             p.title, 
             p.created_at, 
+            p.user_id,
             u.first_name, 
             u.last_name, 
             COUNT(p.id) as number_comments,
             (
                 SELECT COUNT(p.id) as number_likes from posts p 
                 JOIN likes l ON l.post_id = p.id 
+                GROUP BY p.id
+            ),
+            (
+                SELECT
+                CASE 
+                    WHEN p.id = :userId THEN 1
+                    ELSE 0
+                END AS isIncluded
+                FROM posts p 
+                    JOIN likes l ON l.post_id = p.id 
                 GROUP BY p.id
             )
         FROM posts p
@@ -25,7 +36,7 @@ class PostService {
         ORDER BY p.created_at DESC;
         `,
         {
-            replacements: {},
+            replacements: {userId},
             type: QueryTypes.SELECT
         }
         )

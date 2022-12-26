@@ -8,8 +8,9 @@ const router = new Router();
 
 
 
-router.get('/list/posts', async (ctx) => {
-    ctx.body = await PostService.getPostsAndCount()
+router.get('/list/posts/:userId', async (ctx) => {
+    const userId = ctx.params.userId
+    ctx.body = await PostService.getPostsAndCount(userId)
 });
 
 router.get('/:id', async (ctx) => {
