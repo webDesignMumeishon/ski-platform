@@ -33,7 +33,13 @@ Likes.init({
     timestamps: true,
     underscored: true,
     paranoid: true,
-    modelName: 'likes'
+    modelName: 'likes',
+    indexes: [
+        {
+            unique: true,
+            fields: ['user_id', 'post_id']
+        }
+    ]
 });
   
   export default Likes

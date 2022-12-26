@@ -1,12 +1,9 @@
 import Router from '@koa/router';
-import Post from '../db/models/post';
 
 import CommentService from '../services/CommentService';
 import PostService from '../services/PostService';
 
 const router = new Router();
-
-
 
 router.get('/list/posts/:userId', async (ctx) => {
     const userId = ctx.params.userId
