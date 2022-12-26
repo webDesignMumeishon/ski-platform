@@ -62,7 +62,18 @@ const insertDb = {
         Praesent pretium laoreet justo vel luctus. Etiam ullamcorper arcu lacus, quis scelerisque quam malesuada eget. Aliquam sagittis est vitae euismod ultricies.', 
         (NOW() + INTERVAL '1 HOUR'), (NOW() + INTERVAL '1 HOUR'));
     `)
-  }
+  },
+
+  likes: async () => {
+    await sequelize.query(`
+      INSERT INTO 
+        likes("user_id", "post_id", "created_at", "updated_at") 
+      VALUES 
+        (1, 1, NOW(), NOW()),
+        (2, 1, NOW(), NOW()),
+        (3, 1, NOW(), NOW());
+    `)
+  },
 }
 
 

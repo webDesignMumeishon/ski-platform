@@ -6,13 +6,15 @@ import PostService from '../services/PostService';
 
 const router = new Router();
 
-router.get('/:id', async (ctx) => {
-    const postId = ctx.params.id
-    ctx.body = await CommentService.getCommentsFromPost(Number(postId))
-});
+
 
 router.get('/list/posts', async (ctx) => {
     ctx.body = await PostService.getPostsAndCount()
+});
+
+router.get('/:id', async (ctx) => {
+    const postId = ctx.params.id
+    ctx.body = await CommentService.getCommentsFromPost(Number(postId))
 });
 
 

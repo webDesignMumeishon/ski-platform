@@ -14,6 +14,7 @@ import sequelize from './db/db'
 import IndexRouter from './routes/index'
 import City from './db/models/city'
 import insertDb from './db/query/insertDb'
+import Likes from './db/models/likes';
 
 dotenv.config();
 
@@ -47,6 +48,7 @@ app.listen(port, async () => {
     await Comments.sync({ force: true })
     await City.sync({ force: true })
     await ParentChildComment.sync({ force: true })
+    await Likes.sync({ force: true })
 
     console.log('Connection has been established successfully.');
     console.log(`⚡️[server]: Server is running at https://localhost:${port}`);
@@ -55,6 +57,7 @@ app.listen(port, async () => {
     await insertDb.cities()
     await insertDb.posts()
     await insertDb.comments()
+    await insertDb.likes()
 
   } catch (error) {
     console.error('Unable to connect to the database:', error);

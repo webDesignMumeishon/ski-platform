@@ -19,10 +19,6 @@ class Comments extends Model<CommentsAttributes, CommentsCreationAttributes> {
     declare post_id: number;
     declare parent: number;
     declare text: string;
-
-    static classLevelMethod() {
-        return 'foo';
-    }
 }
 
 Comments.init({
