@@ -27,7 +27,8 @@ const insertDb = {
       INSERT INTO 
         posts("user_id", "title", "city_id", "created_at", "updated_at") 
       VALUES 
-        (1, 'Title for post 1', 1, NOW(), NOW());
+        (1, 'This is a post created by Martin Macchi - user_id: 1', 1, NOW(), NOW()),
+        (2, 'This is a post created by Tomas Macchi - user_id: 2', 1, NOW(), NOW());
     `)
   },
 
@@ -62,7 +63,19 @@ const insertDb = {
         Praesent pretium laoreet justo vel luctus. Etiam ullamcorper arcu lacus, quis scelerisque quam malesuada eget. Aliquam sagittis est vitae euismod ultricies.', 
         (NOW() + INTERVAL '1 HOUR'), (NOW() + INTERVAL '1 HOUR'));
     `)
-  }
+  },
+
+  likes: async () => {
+    await sequelize.query(`
+      INSERT INTO 
+        likes("user_id", "post_id", "created_at", "updated_at") 
+      VALUES 
+        (1, 1, NOW(), NOW()),
+        (2, 1, NOW(), NOW()),
+        (3, 1, NOW(), NOW()),
+        (3, 2, NOW(), NOW());
+    `)
+  },
 }
 
 
