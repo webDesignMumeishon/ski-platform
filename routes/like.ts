@@ -16,16 +16,12 @@ router.post('/',checkAndSetUserId, async(ctx) => {
     ctx.status = 201
 })
 
-router.delete('/', checkAndSetUserId, async(ctx) => {
+router.delete('/:postId', checkAndSetUserId, async(ctx) => {
 
-    const {postId} = ctx.request.body as unknown as any
-
-    const deletedLike = await LikeService.unlikePost(ctx.userId, postId)
+    const deletedLike = await LikeService.unlikePost(ctx.userId, Number(ctx.params.postId))
 
     if(deletedLike === LikeDelete.DELETED){
-
         return ctx.status = 200
-
     }
 
 })
