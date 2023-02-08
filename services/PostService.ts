@@ -1,5 +1,5 @@
 import { QueryTypes } from 'sequelize';
-
+import Post from '../db/models/post';
 import sequelize from '../db/db'
 
 class PostService {
@@ -41,6 +41,10 @@ class PostService {
         }
         )
         return result
+    }
+
+    public static async getSinglePost(postId : string){
+        return await Post.findByPk(postId)
     }
 }
 

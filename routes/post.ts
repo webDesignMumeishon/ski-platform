@@ -10,6 +10,11 @@ router.get('/list/posts', checkAndSetUserId, async (ctx) => {
     ctx.body = await PostService.getPostsAndCount(ctx.userId)
 });
 
+router.get('/single/:id', async (ctx) => {
+    const postId = ctx.params.id
+    ctx.body = await PostService.getSinglePost(postId)
+});
+
 router.get('/:id', async (ctx) => {
     const postId = ctx.params.id
     ctx.body = await CommentService.getCommentsFromPost(Number(postId))
