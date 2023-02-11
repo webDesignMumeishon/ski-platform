@@ -12,7 +12,8 @@ router.get('/list/posts', checkAndSetUserId, async (ctx) => {
 
 router.get('/single/:id', async (ctx) => {
     const postId = ctx.params.id
-    ctx.body = await PostService.getSinglePost(postId)
+    const [result] = await PostService.getSinglePost(postId)
+    ctx.body = result
 });
 
 router.get('/:id', async (ctx) => {

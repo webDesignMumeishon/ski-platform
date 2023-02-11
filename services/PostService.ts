@@ -1,5 +1,4 @@
 import { QueryTypes } from 'sequelize';
-import Post from '../db/models/post';
 import sequelize from '../db/db'
 
 class PostService {
@@ -45,7 +44,7 @@ class PostService {
 
     public static async getSinglePost(postId : string){
         return sequelize.query(`
-        SELECT p.id as post_id, p.title, u.first_name, u.last_name FROM posts p
+        SELECT p.id as post_id, p.title as title, u.first_name, u.last_name FROM posts p
         JOIN users u ON u.id = p.user_id
         WHERE p.id = :postId
         `,
