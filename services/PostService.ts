@@ -44,7 +44,16 @@ class PostService {
     }
 
     public static async getSinglePost(postId : string){
-        return await Post.findByPk(postId)
+        return sequelize.query(`
+        SELECT p.id as post_id, p.title, u.first_name, u.last_name FROM posts p
+        JOIN users u ON u.id = p.user_id
+        WHERE p.id = :postId
+        `,
+    {
+        replacements: { postId: postId },
+        type: QueryTypes.SELECT
+    }
+    )
     }
 }
 
