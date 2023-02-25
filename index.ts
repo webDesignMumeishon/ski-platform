@@ -58,6 +58,8 @@ router.use(IndexRouter)
 
 app.listen(port, async () => {
   try {
+
+
     await sequelize.authenticate();
     await User.sync({ force: true })
     await Post.sync({ force: true })
@@ -66,9 +68,21 @@ app.listen(port, async () => {
     await ParentChildComment.sync({ force: true })
     await Likes.sync({ force: true })
 
+    /*
+      Associations 
+    */
     // User & Comments
     User.hasMany(Comments);
-    Comments.belongsTo(User);
+    Comments.belongsTo(User, {
+      foreignKey: 'user_id',
+    });
+    // User & Post
+    User.hasMany(Post)
+    Post.belongsTo(User, {
+      foreignKey: 'user_id'
+    });
+
+
 
     console.log('Connection has been established successfully.');
     console.log(`⚡️[server]: Server is running at https://localhost:${port}`);

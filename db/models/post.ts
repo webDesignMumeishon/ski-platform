@@ -1,4 +1,4 @@
-import { DataTypes, Model, Optional } from "sequelize";
+import { BelongsToGetAssociationMixin, DataTypes, Model, Optional } from "sequelize";
 import sequelize from "../db";
 import City from "./city";
 import User from "./user";
@@ -17,6 +17,8 @@ class Post extends Model<PostAttributes, PostCreationAttributes> {
   declare user_id: number;
   declare title: string;
   declare city_id: number;
+  
+  declare getUser: BelongsToGetAssociationMixin<User>;
 }
 
 Post.init(
