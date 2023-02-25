@@ -66,6 +66,10 @@ app.listen(port, async () => {
     await ParentChildComment.sync({ force: true })
     await Likes.sync({ force: true })
 
+    // User & Comments
+    User.hasMany(Comments);
+    Comments.belongsTo(User);
+
     console.log('Connection has been established successfully.');
     console.log(`⚡️[server]: Server is running at https://localhost:${port}`);
 

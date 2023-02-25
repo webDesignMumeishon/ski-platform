@@ -1,4 +1,4 @@
-import { DataTypes, Model, Optional } from 'sequelize';
+import { BelongsToGetAssociationMixin, DataTypes, Model, Optional } from 'sequelize';
 import sequelize from '../db'
 import User from './user'
 import Post from './post'
@@ -19,6 +19,8 @@ class Comments extends Model<CommentsAttributes, CommentsCreationAttributes> {
     declare post_id: number;
     declare parent: number;
     declare text: string;
+
+    declare getUser: BelongsToGetAssociationMixin<User>;
 }
 
 Comments.init({
