@@ -18,10 +18,10 @@ const insertDb = {
       INSERT INTO 
         cities("city", "state", "country", "postcode", "created_at", "updated_at") 
       VALUES 
-        ('Breckenridge', 'Colorado', 'United States','80424', NOW(), NOW()),
-        ('Breckenridge', 'Colorado', 'United States','80424', NOW(), NOW()),
-        ('Breckenridge', 'Colorado', 'United States','80424', NOW(), NOW()),
-        ('Breckenridge', 'Colorado', 'United States','80424', NOW(), NOW());
+        ('breckenridge', 'colorado', 'United States','80424', NOW(), NOW()),
+        ('breckenridge', 'colorado', 'United States','80424', NOW(), NOW()),
+        ('breckenridge', 'colorado', 'United States','80424', NOW(), NOW()),
+        ('breckenridge', 'colorado', 'United States','80424', NOW(), NOW());
     `)
   },
 
