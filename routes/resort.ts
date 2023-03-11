@@ -4,7 +4,6 @@ import ReportService from '../services/ReportService'
 
 const router = new Router()
 
-
 router.get('/resorts', async(ctx) => {
     ctx.body = await City.findAll()
 })

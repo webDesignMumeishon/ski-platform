@@ -1,5 +1,4 @@
-import Router, { RouterContext } from "@koa/router";
-
+import Router from "@koa/router";
 
 import userRoutes from "./user";
 import testingRoutes from "./testing";
@@ -9,8 +8,6 @@ import likeRoutes from "./like";
 import resortRoute from "./resort";
 
 const router = new Router();
-
-
 
 router.use("/testing", testingRoutes);
 
