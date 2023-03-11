@@ -1,12 +1,18 @@
-import Router from "@koa/router";
+import Router, { RouterContext } from "@koa/router";
+
 
 import userRoutes from "./user";
+import testingRoutes from "./testing";
 import postRoutes from "./post";
 import commentRoutes from "./comment";
 import likeRoutes from "./like";
 import resortRoute from "./resort";
 
 const router = new Router();
+
+
+
+router.use("/testing", testingRoutes);
 
 router.use("/user", userRoutes);
 router.use("/post", postRoutes);
