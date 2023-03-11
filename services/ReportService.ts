@@ -9,7 +9,7 @@ class ReportService {
 
         const html = await axios.get(urlWeb)
     
-        const $ = load(html.data);
+        let $ = load(html.data);
     
         const body = $('body');
     
@@ -19,11 +19,9 @@ class ReportService {
     
         const apiHtml = await axios.get(urlApi)
     
-        const $1 = load(apiHtml.data.snowreport);
+        $ = load(apiHtml.data.snowreport);
         
-        const openTrailsText = $1('h3:contains("Open Trails:")').next('.item').find('.value').text();
-    
-        console.log('Open Trails:', openTrailsText);
+        const openTrailsText = $('h3:contains("Open Trails:")').next('.item').find('.value').text();
     
         return openTrailsText
     }
