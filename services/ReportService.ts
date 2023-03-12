@@ -3,7 +3,7 @@ import { load } from 'cheerio'
 
 class ReportService {
 
-    public static async getTrails(state: string, town: string){
+    public static async getResortReport(state: string, town: string){
 
         const urlWeb = `https://snocountry.com/snow-report/${state}/${town}/`;
 
@@ -21,9 +21,17 @@ class ReportService {
     
         $ = load(apiHtml.data.snowreport);
         
-        const openTrailsText = $('h3:contains("Open Trails:")').next('.item').find('.value').text();
+        const openTrails = $('h3:contains("Open Trails:")').next('.item').find('.value').text();
+        const openTerrain = $('h3:contains("Open Terrain:")').next('.item').find('.value').text();
+        const openLifts = $('h3:contains("Open Lifts:")').next('.item').find('.value').text();
+        const snowConditions = $('.simple-conditions-wrapper .copy').text();
     
-        return openTrailsText
+        return {
+            openTrails,
+            openTerrain,
+            openLifts,
+            snowConditions,
+        }
     }
 
 }

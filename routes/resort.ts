@@ -12,9 +12,9 @@ router.get('/report', async (ctx) => {
 
     const {state, town} = ctx.query
 
-    const numberOfTrails = await ReportService.getTrails(state as string, town as string)
+    const resortReport = await ReportService.getResortReport(state as string, town as string)
 
-    ctx.body = numberOfTrails
+    ctx.body = resortReport
 })
 
 
