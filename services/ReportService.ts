@@ -2,29 +2,37 @@ import axios from 'axios'
 import { load } from 'cheerio'
 
 class ReportService {
+    private apiUrl: string = '';
 
-    public static async getResortReport(state: string, town: string){
-
-        const urlWeb = `https://snocountry.com/snow-report/${state}/${town}/`;
-
-        const html = await axios.get(urlWeb)
+    constructor(private state: string, private town: string) {}
     
-        let $ = load(html.data);
-    
+    public async init() : Promise<void>{
+        const snowReport = await this.getSnowReport();
+        this.apiUrl = `https://snocountry.com/.netlify/functions/snowreport-api?target=${snowReport}&src=resort`;
+    }
+
+    private async getSnowReport(): Promise<number> {
+        const urlWeb = `https://snocountry.com/snow-report/${this.state}/${this.town}/`;
+        const html = await axios.get(urlWeb);
+        const $ = load(html.data);
         const body = $('body');
-    
         const snowReport = body.data('snowreport');
-    
-        const urlApi = `https://snocountry.com/.netlify/functions/snowreport-api?target=${snowReport}&src=resort`;
-    
-        const apiHtml = await axios.get(urlApi)
-    
-        $ = load(apiHtml.data.snowreport);
+        if(typeof snowReport === 'number'){
+            return snowReport
+        }
+        else{
+            throw Error('Snow report not found')
+        }
+    }
+
+    public async getResortReport(){
+        const apiHtml = await axios.get(this.apiUrl);
+        const $api = load(apiHtml.data.snowreport);
         
-        const openTrails = $('h3:contains("Open Trails:")').next('.item').find('.value').text();
-        const openTerrain = $('h3:contains("Open Terrain:")').next('.item').find('.value').text();
-        const openLifts = $('h3:contains("Open Lifts:")').next('.item').find('.value').text();
-        const snowConditions = $('.simple-conditions-wrapper .copy').text();
+        const openTrails = $api('h3:contains("Open Trails:")').next('.item').find('.value').text();
+        const openTerrain = $api('h3:contains("Open Terrain:")').next('.item').find('.value').text();
+        const openLifts = $api('h3:contains("Open Lifts:")').next('.item').find('.value').text();
+        const snowConditions = $api('.simple-conditions-wrapper .copy').text();
     
         return {
             openTrails,
