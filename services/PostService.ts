@@ -3,7 +3,7 @@ import sequelize from '../db/db'
 
 class PostService {
 
-    public static async getPostsAndCount(userId : string){
+    public static async getPostsAndCount(userId : string, town: string, state: string){
         const result = await sequelize.query(`
         SELECT 
         p.id, 
@@ -31,11 +31,14 @@ class PostService {
         FROM posts p
         LEFT JOIN comments c ON c.post_id = p.id
         LEFT JOIN users u ON p.user_id = u.id
+        LEFT JOIN cities ON cities.id = p.city_id
+        WHERE cities.city = :town
+            AND cities.state = :state
         GROUP BY p.id, c.post_id, u.first_name, u.last_name
         ORDER BY p.created_at DESC;
         `,
         {
-            replacements: {userId},
+            replacements: {userId, town, state},
             type: QueryTypes.SELECT
         }
         )

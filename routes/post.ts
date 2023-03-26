@@ -7,7 +7,10 @@ import checkAndSetUserId from '../middleware/checkAndSetUserId';
 const router = new Router();
 
 router.get('/list/posts', checkAndSetUserId, async (ctx) => {
-    ctx.body = await PostService.getPostsAndCount(ctx.userId)
+
+    const {state, town} = ctx.query
+
+    ctx.body = await PostService.getPostsAndCount(ctx.userId, town as string, state as string)
 });
 
 router.get('/single/:id', async (ctx) => {
