@@ -19,9 +19,10 @@ const insertDb = {
         cities("city", "state", "country", "postcode", "created_at", "updated_at") 
       VALUES 
         ('breckenridge', 'colorado', 'United States','80424', NOW(), NOW()),
-        ('breckenridge', 'colorado', 'United States','80424', NOW(), NOW()),
-        ('breckenridge', 'colorado', 'United States','80424', NOW(), NOW()),
-        ('breckenridge', 'colorado', 'United States','80424', NOW(), NOW());
+        ('buttermilk', 'colorado', 'United States','80424', NOW(), NOW()),
+        ('arapahoe-basin', 'colorado', 'United States','80424', NOW(), NOW()),
+        ('aspen-highlands', 'colorado', 'United States','80424', NOW(), NOW()),
+        ('aspen-mountain', 'colorado', 'United States','80424', NOW(), NOW());
     `)
   },
 

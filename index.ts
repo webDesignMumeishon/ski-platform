@@ -26,10 +26,10 @@ const port = process.env.PORT;
 app.use(async function(ctx, next){
   try {
     return await next();
-	} catch (err) {
+	} catch (err: any) {
     console.log(err)
     ctx.status = 500
-    ctx.body = err
+    ctx.body = err.message
 	}
 });
 
