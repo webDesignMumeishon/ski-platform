@@ -7,7 +7,7 @@ class ReportService {
     private _town: string;
 
 
-    constructor(private state: string, private town: string) {
+    constructor(state: string, town: string) {
         this._state = state
         this._town = town
     }
@@ -39,8 +39,10 @@ class ReportService {
         const openTerrain = $api('h3:contains("Open Terrain:")').next('.item').find('.value').text();
         const openLifts = $api('h3:contains("Open Lifts:")').next('.item').find('.value').text();
         const snowConditions = $api('.simple-conditions-wrapper .copy').text();
+        const status = Number(openLifts.split(' ')[0]) > 0 ?? false
     
         return {
+            status,
             openTrails,
             openTerrain,
             openLifts,
