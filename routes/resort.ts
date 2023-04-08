@@ -31,10 +31,7 @@ router.get('/report', async (ctx) => {
         ctx.throw(404, )
     }
 
-
-
     try{
-        throw Error()
         const reportService = new ReportService(state as string, town as string);
         const resortReport = await reportService.getResortReport(); 
         ctx.body = resortReport
