@@ -12,7 +12,7 @@ class ReportService {
         this._town = town
     }
     
-    public async init() : Promise<void>{
+    private async init() : Promise<void>{
         const snowReport = await this.getSnowReport();
         this.apiUrl = `https://snocountry.com/.netlify/functions/snowreport-api?target=${snowReport}&src=resort`;
     }
@@ -32,11 +32,14 @@ class ReportService {
     }
 
     public async getResortReport(){
+        await this.init()
         const apiHtml = await axios.get(this.apiUrl);
         const $api = load(apiHtml.data.snowreport);
 
+        const openTerrainPercentage = $api('h3:contains("Open Terrain:")').next('.item').find('.value').text().replace(/\s+/g, "");
+
         const openTrails = $api('h3:contains("Open Trails:")').next('.item').find('.value').text();
-        const openTerrain = $api('h3:contains("Open Terrain:")').next('.item').find('.value').text();
+        const openTerrain = openTerrainPercentage === '%' ? '0%' : openTerrainPercentage
         const openLifts = $api('h3:contains("Open Lifts:")').next('.item').find('.value').text();
         const snowConditions = $api('.simple-conditions-wrapper .copy').text();
         const status = Number(openLifts.split(' ')[0]) > 0 ?? false

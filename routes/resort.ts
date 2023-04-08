@@ -29,11 +29,7 @@ router.get('/report', async (ctx) => {
     }
 
     const reportService = new ReportService(state as string, town as string);
-    await reportService.init()
-
     const resortReport = await reportService.getResortReport(); 
-
-
     ctx.body = resortReport
 })
 
