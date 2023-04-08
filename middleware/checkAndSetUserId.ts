@@ -17,7 +17,6 @@ const checkAndSetUserId = async (ctx: RouterContext, next: Next) => {
         await next()
     }
     else {
-        console.log(1, 'ok')
         ctx.status = 401
         ctx.throw('Unauthorized')
     }
