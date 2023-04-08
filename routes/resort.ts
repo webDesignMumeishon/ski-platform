@@ -1,6 +1,7 @@
 import Router from '@koa/router'
 import City from '../db/models/city'
-import ReportService from '../services/ReportService'
+import ReportService, {ResortRouteError} from '../services/ReportService'
+
 
 const router = new Router()
 
@@ -16,6 +17,8 @@ enum Towns {
     ASPEN_MOUNTAIN= 'aspen-mountain',
 }
 
+
+
 router.get('/resorts', async(ctx) => {
     ctx.body = await City.findAll()
 })
@@ -25,12 +28,23 @@ router.get('/report', async (ctx) => {
     const {state, town} = ctx.query
 
     if(!Object.values(Towns).includes(town as Towns) || !Object.values(States).includes(state as States)){
-        throw new Error('Invalid Town or State')
+        ctx.throw(404, )
     }
 
-    const reportService = new ReportService(state as string, town as string);
-    const resortReport = await reportService.getResortReport(); 
-    ctx.body = resortReport
+
+
+    try{
+        throw Error()
+        const reportService = new ReportService(state as string, town as string);
+        const resortReport = await reportService.getResortReport(); 
+        ctx.body = resortReport
+    }
+    catch(error){
+        if(error instanceof ResortRouteError.REPORT_NOT_FOUND){
+            ctx.throw(error.statusCode, error.message)
+        }
+        throw error
+    }
 })
 
 

@@ -1,6 +1,19 @@
 import axios from 'axios'
 import { load } from 'cheerio'
 
+class NotFoundReport extends Error{
+    public statusCode: number
+
+    constructor(message: string){
+        super(message)
+        this.statusCode = 404
+    }
+}
+
+export const ResortRouteError = {
+    REPORT_NOT_FOUND: NotFoundReport
+}
+
 class ReportService {
     private apiUrl: string = '';
     private _state: string;
@@ -27,7 +40,7 @@ class ReportService {
             return snowReport
         }
         else{
-            throw Error('Snow report not found')
+            throw new NotFoundReport('Report not found')
         }
     }
 

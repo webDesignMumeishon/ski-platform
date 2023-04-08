@@ -27,9 +27,8 @@ app.use(async function(ctx, next){
   try {
     return await next();
 	} catch (err: any) {
-    console.log(err)
-    ctx.status = 500
-    ctx.body = err.message
+      ctx.status = err?.statusCode || err?.status || 500
+      ctx.body = err.message || 'Internal Server Error'
 	}
 });
 
