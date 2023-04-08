@@ -1,21 +1,12 @@
 import Router from '@koa/router'
+import Joi from 'joi'
+
+import { Towns, States } from '../enums/resorts'
 import City from '../db/models/city'
 import ReportService, {ResortRouteError} from '../services/ReportService'
-
+import Validator from '../util/joi_validation'
 
 const router = new Router()
-
-enum States {
-    COLORADO = 'colorado'
-}
-
-enum Towns {
-    BRECKENRIDGE = 'breckenridge',
-    BUTTERMILK = 'buttermilk',
-    ARAPAHOE_BASIN= 'arapahoe-basin',
-    ASPEN_HIGHLANDS= 'aspen-highlands',
-    ASPEN_MOUNTAIN= 'aspen-mountain',
-}
 
 
 
@@ -23,16 +14,29 @@ router.get('/resorts', async(ctx) => {
     ctx.body = await City.findAll()
 })
 
+const reportSchema = Joi.object()
+		.keys({
+			town: Joi.string().valid(...Object.values(Towns)).required(),
+			state: Joi.string().valid(...Object.values(States)).required()
+		})
+        .unknown(false)
+
+interface ReportValidator{
+	state: string;
+	town: string;
+}
+
 router.get('/report', async (ctx) => {
+    const queryParams = ctx.query
 
-    const {state, town} = ctx.query
+    const msgValidator = new Validator<ReportValidator>(reportSchema);
 
-    if(!Object.values(Towns).includes(town as Towns) || !Object.values(States).includes(state as States)){
-        ctx.throw(404, 'Invalid state or town')
-    }
+    if (!msgValidator.validate(queryParams)) {
+		return ctx.throw(404, msgValidator.getError().details[0].message)
+	}
 
     try{
-        const reportService = new ReportService(state as string, town as string);
+        const reportService = new ReportService(queryParams.state, queryParams.town);
         const resortReport = await reportService.getResortReport(); 
         ctx.body = resortReport
     }
