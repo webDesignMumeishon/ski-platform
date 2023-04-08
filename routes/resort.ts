@@ -28,7 +28,7 @@ router.get('/report', async (ctx) => {
     const {state, town} = ctx.query
 
     if(!Object.values(Towns).includes(town as Towns) || !Object.values(States).includes(state as States)){
-        ctx.throw(404, )
+        ctx.throw(404, 'Invalid state or town')
     }
 
     try{
