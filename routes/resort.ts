@@ -8,8 +8,6 @@ import Validator from '../util/joi_validation'
 
 const router = new Router()
 
-
-
 router.get('/resorts', async(ctx) => {
     ctx.body = await City.findAll()
 })
