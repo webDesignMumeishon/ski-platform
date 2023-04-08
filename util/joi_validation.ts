@@ -2,9 +2,10 @@ import { ValidationError, ValidationOptions, AnySchema } from 'joi';
 
 export default class Validator<T> {
 	private readonly schema: AnySchema;
-	private validateOptions: ValidationOptions | undefined ;
-	private error!: ValidationError | null;
-	constructor(schema: AnySchema, validateOptions: ValidationOptions | undefined = undefined) {
+	private validateOptions: ValidationOptions;
+	private error: ValidationError;
+	
+	constructor(schema: AnySchema, validateOptions: ValidationOptions = null) {
 		this.schema = schema;
 		this.validateOptions = validateOptions;
 	}
@@ -18,7 +19,7 @@ export default class Validator<T> {
 			return false;
 		}
 	}
-	public getError(): ValidationError | null {
+	public getError(): ValidationError {
 		return this.error;
 	}
 }
