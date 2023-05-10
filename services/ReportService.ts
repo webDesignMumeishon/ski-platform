@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { load } from 'cheerio'
+import City from '../db/models/city'
 
 class NotFoundReport extends Error{
     public statusCode: number
@@ -56,8 +57,15 @@ class ReportService {
         const openLifts = $api('h3:contains("Open Lifts:")').next('.item').find('.value').text();
         const snowConditions = $api('.simple-conditions-wrapper .copy').text();
         const status = Number(openLifts.split(' ')[0]) > 0 ?? false
-    
+
+        const city = await City.findOne({
+            where: {city: this._town, state: this._state}
+        })
+        
         return {
+            id: city.id,
+            city: city.city,
+            state: city.state,
             status,
             openTrails,
             openTerrain,

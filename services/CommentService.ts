@@ -1,5 +1,5 @@
 import { QueryTypes } from 'sequelize';
-
+import Post from '../db/models/post';
 import sequelize from '../db/db'
 
 class CommentService {
@@ -18,6 +18,14 @@ class CommentService {
         }
         )
         return result
+    }
+
+    public static async createNewPost(userId: number, cityId: number, title: string){
+        Post.create({
+            user_id: userId,
+            title: title,
+            city_id: cityId
+        })
     }
 }
 
