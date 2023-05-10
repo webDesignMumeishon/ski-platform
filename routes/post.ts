@@ -32,7 +32,7 @@ interface CreateNewPost{
 
 router.post('/', checkAndSetUserId, async (ctx) => {
     const body = ctx.request.body
-    
+
     const validator = new Validator<CreateNewPost>(createNewPostSchema);
 
     if (!validator.validate(body)) {

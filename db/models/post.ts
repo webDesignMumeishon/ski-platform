@@ -46,6 +46,14 @@ Post.init(
         model: City,
         key: "id",
       },
+      validate: {
+        async cityExists(value: number) {
+          const city = await City.findByPk(value);
+          if (!city) {
+            throw new Error("City does not exist");
+          }
+        }
+      }
     },
   },
   {

@@ -21,7 +21,8 @@ class CommentService {
     }
 
     public static async createNewPost(userId: number, cityId: number, title: string){
-        Post.create({
+
+        return Post.create({
             user_id: userId,
             title: title,
             city_id: cityId
