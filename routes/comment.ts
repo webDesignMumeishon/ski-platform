@@ -2,6 +2,8 @@ import Router from '@koa/router';
 import CommentService from '../services/CommentService'
 import checkAndSetUserId from '../middleware/checkAndSetUserId';
 import User from '../db/models/user';
+import Validator from '../util/joi_validation'
+import { createNewCommentSchema } from '../schemas/comment';
 
 const router = new Router();
 
@@ -9,9 +11,20 @@ router.get('/', async (ctx) => {
     ctx.body = 'ok'
 });
 
+interface CreateNewComment {
+    postId: number;
+    text: string;
+}
+
 router.post('/', checkAndSetUserId,  async (ctx) => {
-    const body: any = ctx.request.body
-    const comment = await CommentService.createNewCommentForPost(ctx.userId, body.post_id, body.text)
+    const body = ctx.request.body
+
+    const validator = new Validator<CreateNewComment>(createNewCommentSchema);
+
+    if (!validator.validate(body)) {
+		return ctx.throw(404, validator.getError().details[0].message)
+	}
+    const comment = await CommentService.createNewCommentForPost(ctx.userId, body.postId, body.text)
 
     const user = await User.findByPk(ctx.userId)
 
