@@ -25,7 +25,7 @@ router.get('/:id', async (ctx) => {
     ctx.body = await CommentService.getCommentsFromPost(Number(postId))
 });
 
-interface CreateNewPost{
+interface CreateNewPostRequest{
     cityId: number;
     title: string;
 }
@@ -33,7 +33,7 @@ interface CreateNewPost{
 router.post('/', checkAndSetUserId, async (ctx) => {
     const body = ctx.request.body
 
-    const validator = new Validator<CreateNewPost>(createNewPostSchema);
+    const validator = new Validator<CreateNewPostRequest>(createNewPostSchema);
 
     if (!validator.validate(body)) {
 		return ctx.throw(404, validator.getError().details[0].message)

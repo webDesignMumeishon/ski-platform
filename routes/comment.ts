@@ -11,7 +11,7 @@ router.get('/', async (ctx) => {
     ctx.body = 'ok'
 });
 
-interface CreateNewComment {
+interface CreateNewCommentRequest {
     postId: number;
     text: string;
 }
@@ -19,7 +19,7 @@ interface CreateNewComment {
 router.post('/', checkAndSetUserId,  async (ctx) => {
     const body = ctx.request.body
 
-    const validator = new Validator<CreateNewComment>(createNewCommentSchema);
+    const validator = new Validator<CreateNewCommentRequest>(createNewCommentSchema);
 
     if (!validator.validate(body)) {
 		return ctx.throw(404, validator.getError().details[0].message)
