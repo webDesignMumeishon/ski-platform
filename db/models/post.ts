@@ -49,7 +49,7 @@ Post.init(
       validate: {
         async cityExists(value: number) {
           const city = await City.findByPk(value);
-          if (!city) {
+          if (city === null) {
             throw new Error("City does not exist");
           }
         }
