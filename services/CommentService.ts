@@ -21,9 +21,10 @@ class CommentService {
         return result
     }
 
-    public static async createNewCommentForPost(user_id: number, post_id: number, text: string){
+    public static async createNewCommentForPost(user_id: number, post_id: number, text: string, parent: number = null){
         return Comment.create({
             user_id,
+            parent,
             post_id,
             text
         })

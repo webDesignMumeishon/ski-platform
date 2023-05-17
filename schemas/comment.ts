@@ -6,3 +6,11 @@ export const createNewCommentSchema = Joi.object()
 			text: Joi.string().required()
 		})
         .unknown(false)
+
+export const createNewReplySchema = Joi.object()
+.keys({
+	postId: Joi.number().required(),
+	text: Joi.string().required(),
+	parent: Joi.number().required(),
+})
+.unknown(false)
