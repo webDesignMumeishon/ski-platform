@@ -11,6 +11,6 @@ export const createNewReplySchema = Joi.object()
 .keys({
 	postId: Joi.number().required(),
 	text: Joi.string().required(),
-	parent: Joi.number().required(),
+	parent: Joi.number().optional(),
 })
 .unknown(false)
