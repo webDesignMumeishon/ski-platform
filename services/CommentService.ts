@@ -21,7 +21,7 @@ class CommentService {
         return result
     }
 
-    public static async createNewCommentForPost(user_id: number, post_id: number, text: string, parent: number = null){
+    public static async createNewCommentForPost(user_id: number, post_id: number, text: string, parent: number = null) : Promise<Comment>{
         return Comment.create({
             user_id,
             parent,

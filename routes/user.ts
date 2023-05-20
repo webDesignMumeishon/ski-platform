@@ -11,6 +11,24 @@ dotenv.config();
 
 const router = new Router();
 
+router.get("/me", checkAndSetUserId, async (ctx) => {
+  const id = ctx.userId;
+
+  if (id != ctx.userId) {
+    ctx.throw("Unauthorized");
+  }
+
+  const user = await User.findByPk(id);
+  if (user !== null) {
+    return (ctx.body = {
+      ...user.toJSON(),
+      fullName: user.fullName,
+    });
+  } else {
+    return (ctx.status = 404);
+  }
+});
+
 router.get("/:id", checkAndSetUserId, async (ctx) => {
   const id = ctx.params.id;
 
