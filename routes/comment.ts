@@ -25,7 +25,16 @@ router.post('/', checkAndSetUserId,  async (ctx) => {
 
     const user = await User.findByPk(ctx.userId)
 
-    ctx.body = {...comment.toJSON(), first_name: user.firstName, last_name: user.lastName}
+    const commentResponse = {
+        id: comment.id,
+        parent: comment.parent,
+        text: comment.text,
+        created_at: comment.createdAt,
+        first_name: user.firstName,
+        last_name: user.lastName,
+    }
+
+    ctx.body = commentResponse
 });
 
 
