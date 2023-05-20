@@ -4,7 +4,7 @@ import City from '../db/models/city'
 import ReportService, {ResortRouteError} from '../services/ReportService'
 import Validator from '../util/joi_validation'
 import ResortService from '../services/ResortService'
-import {reportSchema} from '../schemas/resort'
+import {reportSchema, keywordSchema} from '../schemas/resort'
 
 const router = new Router()
 
@@ -49,9 +49,18 @@ router.get('/one', async(ctx) => {
     ctx.body = await ResortService.getCityByName(queryParams.town, queryParams.state)
 })
 
+interface KeywordValidator{
+	keyword: string;
+}
 
-
-
+router.get('/search', async(ctx) => {
+    const queryParams = ctx.query
+    const validator = new Validator<KeywordValidator>(keywordSchema);
+    if (!validator.validate(queryParams)) {
+		return ctx.throw(404, validator.getError().details[0].message)
+	}
+    ctx.body = await ResortService.searchByKeyword(queryParams.keyword)
+})
 
 
 export default router.routes()
