@@ -22,7 +22,19 @@ router.get('/single/:id', async (ctx) => {
 
 router.get('/:id', async (ctx) => {
     const postId = ctx.params.id
-    ctx.body = await CommentService.getCommentsFromPost(Number(postId))
+    const comments = await CommentService.getCommentsFromPost(Number(postId))
+    const [likesCount] = await PostService.getLikesFromPost(postId)
+
+    if(comments.length === 0){
+        const [result] = await PostService.getSinglePost(postId)
+        comments.push(result)
+    }
+
+    ctx.body = {
+        post: comments[0],
+        comments: comments,
+        likes: likesCount.count
+    }
 });
 
 interface CreateNewPostRequest{

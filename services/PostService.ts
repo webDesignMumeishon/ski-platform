@@ -57,6 +57,17 @@ class PostService {
     }
     )
     }
+
+    public static async getLikesFromPost(postId: string): Promise<{ count: string; }[]> {
+        return sequelize.query<{count: string}>(`
+        SELECT COUNT(*) from likes WHERE post_id = :postId
+        `,
+    {
+        replacements: { postId: postId },
+        type: QueryTypes.SELECT,
+    }
+    )
+    }
 }
 
 
