@@ -92,4 +92,9 @@ router.post("/log-in", async (ctx: RouterContext) => {
   }
 });
 
+router.delete("/", async (ctx: RouterContext, next) => {
+  ctx.cookies.set('ski_platform', null, { expires: new Date(0) });
+  ctx.status = 204;
+});
+
 export default router.routes();
