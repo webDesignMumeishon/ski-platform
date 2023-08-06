@@ -1,10 +1,24 @@
 import { QueryTypes } from 'sequelize';
 import sequelize from '../db/db'
 
+interface PostAndCount {
+    id: number,
+    title: string
+    created_at: Date
+    user_id: number
+    first_name: string
+    last_name: string
+    number_comments: string,
+    number_likes: string,
+    did_like: null | string
+}
+
+type PostAndCountPublic = Omit<PostAndCount, 'did_like'>
+
 class PostService {
 
-    public static async getPostsAndCount(userId : string, town: string, state: string){
-        const result = await sequelize.query(`
+    public static async getPostsAndCount(userId : string, town: string, state: string) : Promise<PostAndCount[]>{
+        const result = await sequelize.query<PostAndCount>(`
         SELECT 
         p.id, 
         p.title, 
@@ -43,6 +57,47 @@ class PostService {
         }
         )
         return result
+    }
+
+    public static async getPublicPostsAndCount(town: string, state: string) : Promise<PostAndCount[]>{
+        const result = await sequelize.query<PostAndCountPublic>(`
+        SELECT 
+        p.id, 
+        p.title, 
+        p.created_at, 
+        p.user_id,
+        u.first_name, 
+        u.last_name, 
+        COUNT(c.post_id) as number_comments,
+        (
+            SELECT COUNT(l.id) as number_likes from likes l
+            WHERE l.post_id = p.id
+            GROUP BY l.post_id
+        )
+        FROM posts p
+        LEFT JOIN comments c ON c.post_id = p.id
+        LEFT JOIN users u ON p.user_id = u.id
+        LEFT JOIN cities ON cities.id = p.city_id
+        WHERE cities.city = :town
+            AND cities.state = :state
+        GROUP BY p.id, c.post_id, u.first_name, u.last_name
+        ORDER BY p.created_at DESC;
+        `,
+        {
+            replacements: {town, state},
+            type: QueryTypes.SELECT
+        }
+        )
+
+        const posts = result.map(row => {
+            return {
+                ...row,
+                did_like: null
+            }
+        })
+
+        return posts
+
     }
 
     public static async getSinglePost(postId : string){
