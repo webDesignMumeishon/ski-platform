@@ -17,7 +17,7 @@ type PostAndCountPublic = Omit<PostAndCount, 'did_like'>
 
 class PostService {
 
-    public static async getPostsAndCount(userId : string, town: string, state: string) : Promise<PostAndCount[]>{
+    private static async getPostsAndCountLogged(userId : string, town: string, state: string) : Promise<PostAndCount[]>{
         const result = await sequelize.query<PostAndCount>(`
         SELECT 
         p.id, 
@@ -59,7 +59,16 @@ class PostService {
         return result
     }
 
-    public static async getPublicPostsAndCount(town: string, state: string) : Promise<PostAndCount[]>{
+    public static async getPostsAndCount(town: string, state: string, userId? : string) : Promise<PostAndCount[]>{
+        if(userId === undefined){
+            return PostService.getPublicPostsAndCount(town, state)
+        }
+        else{
+            return PostService.getPostsAndCountLogged(userId, town, state)
+        }
+    }
+
+    private static async getPublicPostsAndCount(town: string, state: string) : Promise<PostAndCount[]>{
         const result = await sequelize.query<PostAndCountPublic>(`
         SELECT 
         p.id, 

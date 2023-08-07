@@ -3,21 +3,16 @@ import Router from '@koa/router';
 import CommentService from '../services/CommentService';
 import PostService from '../services/PostService';
 import checkAndSetUserId from '../middleware/checkAndSetUserId';
-import checkCookie from '../middleware/checkCookie';
+import setUserId from '../middleware/setUserId';
 import Validator from '../util/joi_validation'
 import {createNewPostSchema} from '../schemas/post'
 
 
 const router = new Router();
 
-router.get('/list/posts', checkCookie, async (ctx) => {
+router.get('/list/posts', setUserId, async (ctx) => {
     const {state, town} = ctx.query
-    if(ctx.hasCookie){
-        ctx.body = await PostService.getPostsAndCount(ctx.userId, town as string, state as string)
-    }
-    else{
-        ctx.body = await PostService.getPublicPostsAndCount(town as string, state as string)
-    }
+    ctx.body = await PostService.getPostsAndCount(town as string, state as string, ctx.userId)
 });
 
 router.get('/single/:id', async (ctx) => {
