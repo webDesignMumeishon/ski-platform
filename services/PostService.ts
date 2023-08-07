@@ -1,24 +1,28 @@
-import { QueryTypes } from 'sequelize';
-import sequelize from '../db/db'
+import { QueryTypes } from "sequelize";
+import sequelize from "../db/db";
 
 interface PostAndCount {
-    id: number,
-    title: string
-    created_at: Date
-    user_id: number
-    first_name: string
-    last_name: string
-    number_comments: string,
-    number_likes: string,
-    did_like: null | string
+  id: number;
+  title: string;
+  created_at: Date;
+  user_id: number;
+  first_name: string;
+  last_name: string;
+  number_comments: string;
+  number_likes: string;
+  did_like: null | string;
 }
 
-type PostAndCountPublic = Omit<PostAndCount, 'did_like'>
+type PostAndCountPublic = Omit<PostAndCount, "did_like">;
 
 class PostService {
-
-    private static async getPostsAndCountLogged(userId : string, town: string, state: string) : Promise<PostAndCount[]>{
-        const result = await sequelize.query<PostAndCount>(`
+  private static async getPostsAndCountLogged(
+    userId: string,
+    town: string,
+    state: string
+  ): Promise<PostAndCount[]> {
+    return sequelize.query<PostAndCount>(
+      `
         SELECT 
         p.id, 
         p.title, 
@@ -51,25 +55,31 @@ class PostService {
         GROUP BY p.id, c.post_id, u.first_name, u.last_name
         ORDER BY p.created_at DESC;
         `,
-        {
-            replacements: {userId, town, state},
-            type: QueryTypes.SELECT
-        }
-        )
-        return result
-    }
+      {
+        replacements: { userId, town, state },
+        type: QueryTypes.SELECT,
+      }
+    );
+  }
 
-    public static async getPostsAndCount(town: string, state: string, userId? : string) : Promise<PostAndCount[]>{
-        if(userId === undefined){
-            return PostService.getPublicPostsAndCount(town, state)
-        }
-        else{
-            return PostService.getPostsAndCountLogged(userId, town, state)
-        }
+  public static async getPostsAndCount(
+    town: string,
+    state: string,
+    userId?: string
+  ): Promise<PostAndCount[]> {
+    if (userId === undefined) {
+      return PostService.getPublicPostsAndCount(town, state);
+    } else {
+      return PostService.getPostsAndCountLogged(userId, town, state);
     }
+  }
 
-    private static async getPublicPostsAndCount(town: string, state: string) : Promise<PostAndCount[]>{
-        const result = await sequelize.query<PostAndCountPublic>(`
+  private static async getPublicPostsAndCount(
+    town: string,
+    state: string
+  ): Promise<PostAndCount[]> {
+    const result = await sequelize.query<PostAndCountPublic>(
+      `
         SELECT 
         p.id, 
         p.title, 
@@ -92,50 +102,49 @@ class PostService {
         GROUP BY p.id, c.post_id, u.first_name, u.last_name
         ORDER BY p.created_at DESC;
         `,
-        {
-            replacements: {town, state},
-            type: QueryTypes.SELECT
-        }
-        )
+      {
+        replacements: { town, state },
+        type: QueryTypes.SELECT,
+      }
+    );
 
-        const posts = result.map(row => {
-            return {
-                ...row,
-                did_like: null
-            }
-        })
+    const posts = result.map((row) => {
+      return {
+        ...row,
+        did_like: null,
+      };
+    });
 
-        return posts
+    return posts;
+  }
 
-    }
-
-    public static async getSinglePost(postId : string){
-        return sequelize.query(`
+  public static async getSinglePost(postId: string) {
+    return sequelize.query(
+      `
         SELECT p.id as post_id, p.title as title, p.created_at, u.first_name, u.last_name FROM posts p
         JOIN users u ON u.id = p.user_id
         WHERE p.id = :postId
         `,
-    {
-        replacements: { postId: postId },
-        type: QueryTypes.SELECT
-    }
-    )
-    }
-
-    public static async getLikesFromPost(postId: string): Promise<{ count: string; }[]> {
-        return sequelize.query<{count: string}>(`
-        SELECT COUNT(*) from likes WHERE post_id = :postId
-        `,
-    {
+      {
         replacements: { postId: postId },
         type: QueryTypes.SELECT,
-    }
-    )
-    }
+      }
+    );
+  }
+
+  public static async getLikesFromPost(
+    postId: string
+  ): Promise<{ count: string }[]> {
+    return sequelize.query<{ count: string }>(
+      `
+        SELECT COUNT(*) from likes WHERE post_id = :postId
+        `,
+      {
+        replacements: { postId: postId },
+        type: QueryTypes.SELECT,
+      }
+    );
+  }
 }
 
-
-export default PostService
-
-
-
+export default PostService;
