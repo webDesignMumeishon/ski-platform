@@ -15,8 +15,7 @@ describe('LikeService', async function(){
     })
 
     it('Should unlike post', async function(){
-        const result = await LikeService.unlikePost(10101, 1)
-
+        await LikeService.unlikePost(10101, 1)
         expect(stubUnlikePost).to.have.been.calledWith(10101, 1)
     })
   
