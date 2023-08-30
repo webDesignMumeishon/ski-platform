@@ -1,6 +1,6 @@
-process.env.DATABASE_URL = 'postgres://postgres@localhost:5432/ski';
-process.env.NODE_ENV = 'test';
-process.env.TEST_SUITE = 'unit';
+import { NodeEnv } from '../enums/config';
+
+process.env.NODE_ENV = NodeEnv.TEST;
 
 // Configure chai-as-promised
 import chai from 'chai';
