@@ -8,7 +8,8 @@
     "start": "node dist/index.js",
     "dev": "nodemon index.ts",
     "test-server": "NODE_ENV=test mocha",
-    "test:unit": "npm run test-server --config unit.mocharc.json"
+    "test:unit": "npm run test-server --config unit.mocharc.json",
+    "test:e2e": "TEST_SUITE=e2e npm run test-server --config e2e.mocharc.json"
   },
   "repository": {
     "type": "git",

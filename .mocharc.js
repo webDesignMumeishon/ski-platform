@@ -1,4 +1,5 @@
-
+const unitConfigs = require('./unit.mocharc.json')
+const e2eConfigs = require('./e2e.mocharc.json')
 /**
  * mocharc.js (or simply mocha.opts for versions prior to Mocha 8.0.0) is a configuration file used to customize the behavior of the Mocha test runner. 
  * This file allows you to define various options, settings, and command-line arguments that affect how your tests are executed. 
@@ -8,38 +9,24 @@
 const UNIT = 'unit'
 
 class Test {
-	requiredFiles = [
-		'ts-node/register', // It allows you to directly run TypeScript code in Node.js without having to explicitly compile it to JavaScript first. By using ts-node/register, you're telling Node.js to use the TypeScript compiler (ts-node) to transpile your TypeScript code on-the-fly before executing it.
-		'test/config.ts', // Load config file to set up middlewares
-		'source-map-support/register', // When an error occurs, this utility helps translate the error location from the compiled JavaScript back to the original TypeScript source code.
-	];
+	unit = unitConfigs
+	e2e = e2eConfigs
 
 	constructor(suite){
 		this.suite = suite
 	}
 
 	getConfigs(){
-		const configs = {
-			require: this.requiredFiles
+		if(this.suite === 'unit'){
+			return this.unit
 		}
-
-		switch(this.suite){
-			case UNIT: 
-			default:
-				configs.timeout = 50
-				configs.spec = 'test/unit/**/*.spec.ts'
+		else{
+			return this.e2e
 		}
-
-		return configs
 	}
 }
 
 const suite = process.env.TEST_SUITE || UNIT;
 const suiteConfigs = new Test(suite)
 
-module.exports = {
-	exit: true,
-	parallel: false,
-	recursive: true,
-	...suiteConfigs.getConfigs()
-};
+module.exports = suiteConfigs.getConfigs()
