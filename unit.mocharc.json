@@ -1,0 +1,22 @@
+{
+	"full-trace": true,
+	"global": [],
+	"ignore": [],
+	"inline-diffs": false,
+	"node-option": ["unhandled-rejections=strict"],
+	"parallel": true,
+	"recursive": true,
+	"reporter": "spec",
+	"retries": 1,
+	"slow": "5",
+	"sort": false,
+	"spec": ["test/unit/**/*.spec.ts"],
+	"timeout": "10",
+	"trace-warnings": true,
+	"enable-source-maps": true,
+	"require": [
+		"ts-node/register", 
+		"test/config.ts", 
+		"source-map-support/register"
+	]
+}
