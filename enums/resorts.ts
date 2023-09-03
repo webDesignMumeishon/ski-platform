@@ -1,5 +1,6 @@
 export enum States {
-    COLORADO = 'colorado'
+    COLORADO = 'colorado',
+    ALBERTA='alberta'
 }
 
 export enum Towns {
@@ -8,4 +9,5 @@ export enum Towns {
     ARAPAHOE_BASIN= 'arapahoe-basin',
     ASPEN_HIGHLANDS= 'aspen-highlands',
     ASPEN_MOUNTAIN= 'aspen-mountain',
+    NORQUAY= 'mt-norquay-ski-resort'
 }
