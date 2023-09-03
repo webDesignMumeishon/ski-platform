@@ -22,7 +22,8 @@ const insertDb = {
         ('buttermilk', 'colorado', 'United States','80424', NOW(), NOW()),
         ('arapahoe-basin', 'colorado', 'United States','80424', NOW(), NOW()),
         ('aspen-highlands', 'colorado', 'United States','80424', NOW(), NOW()),
-        ('aspen-mountain', 'colorado', 'United States','80424', NOW(), NOW());
+        ('aspen-mountain', 'colorado', 'United States','80424', NOW(), NOW()),
+        ('mt-norquay-ski-resort', 'alberta', 'Canada','80424', NOW(), NOW());
     `)
   },
 
