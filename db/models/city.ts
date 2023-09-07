@@ -4,6 +4,8 @@ import sequelize from '../db'
 type CityAttributes = {
   id: number,
   city: string,
+  code: string,
+  flag: string,
   state: string,
   country: string,
   postcode: string,
@@ -14,6 +16,8 @@ type CityCreationAttributes = Optional<CityAttributes, 'id'>
 class City extends Model<CityAttributes, CityCreationAttributes> {
   declare id: number;
   declare city: string;
+  declare code: string;
+  declare flag: string;
   declare state: string;
   declare country: string;
   declare postcode: string;
@@ -27,6 +31,14 @@ City.init({
       unique: true
     },
     city: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    code: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    flag : {
       type: DataTypes.STRING,
       allowNull: false
     },

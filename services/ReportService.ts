@@ -59,7 +59,7 @@ class ReportService {
         const status = Number(openLifts.split(' ')[0]) > 0 ?? false
 
         const city = await City.findOne({
-            where: {city: this._town, state: this._state}
+            where: {code: this._town, state: this._state}
         })
         
         return {

@@ -16,14 +16,14 @@ const insertDb = {
   cities: async () => {
     await sequelize.query(`
       INSERT INTO 
-        cities("city", "state", "country", "postcode", "created_at", "updated_at") 
+        cities("city","code", "flag", "state", "country", "postcode", "created_at", "updated_at") 
       VALUES 
-        ('breckenridge', 'colorado', 'United States','80424', NOW(), NOW()),
-        ('buttermilk', 'colorado', 'United States','80424', NOW(), NOW()),
-        ('arapahoe-basin', 'colorado', 'United States','80424', NOW(), NOW()),
-        ('aspen-highlands', 'colorado', 'United States','80424', NOW(), NOW()),
-        ('aspen-mountain', 'colorado', 'United States','80424', NOW(), NOW()),
-        ('mt-norquay-ski-resort', 'alberta', 'Canada','80424', NOW(), NOW());
+        ('Breckenridge','breckenridge', '🇺🇸', 'colorado', 'United States','80424', NOW(), NOW()),
+        ('Buttermilk','buttermilk', '🇺🇸', 'colorado', 'United States','80424', NOW(), NOW()),
+        ('Arapahoe Basin','arapahoe-basin', '🇺🇸', 'colorado', 'United States','80424', NOW(), NOW()),
+        ('Aspen Highlands','aspen-highlands', '🇺🇸', 'colorado', 'United States','80424', NOW(), NOW()),
+        ('Aspen Mountain','aspen-mountain', '🇺🇸', 'colorado', 'United States','80424', NOW(), NOW()),
+        ('Mount Norquay','mt-norquay-ski-resort', '🇨🇦', 'alberta', 'Canada','80424', NOW(), NOW());
     `)
   },
 
